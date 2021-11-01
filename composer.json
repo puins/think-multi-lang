@@ -1,0 +1,15 @@
+{
+    "name": "puins/think-multi-lang",
+    "description": "thinkphp6多语言模块支持",
+    "license": "Apache-2.0",
+    "authors": [
+        {
+            "name": "puins",
+            "email": "hnjumeng@163.com"
+        }
+    ],
+    "require": {
+    	"php": ">=7.1.0",
+        "topthink/framework": "^6.0.0"
+    }
+}
