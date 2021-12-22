@@ -14,7 +14,6 @@ namespace think\middleware;
 
 use Closure;
 use think\App;
-use think\helper\Str;
 use think\Lang;
 use think\Request;
 use think\Response;
@@ -46,21 +45,10 @@ class MultiLangPack
         // 自动侦测当前语言
         $langset = $this->lang->detect($request);
 
-        $controller = $request->controller();
-        //控制器名称搜索及转换
-        preg_match('/[A-Z]{1}.*/', $controller, $matches);
-        $controller = preg_filter('/[A-Z]{1}.*/', Str::snake($matches[0]), $controller);
-        $path = str_replace('.', DIRECTORY_SEPARATOR, $controller);
-        $modulePath = str_replace(Str::snake($matches[0]), '', $path);
-
-        //模块公用语言
-        $moduleLangPath = $this->app->getAppPath() . 'lang' . DIRECTORY_SEPARATOR . $modulePath . $langset . '.php';
-        if (is_file($moduleLangPath)) {
-            $this->lang->load($moduleLangPath);
-        }
+        $controller = str_replace('._', '/', parse_name($request->controller()));
 
         //控制器语言
-        $langPath = $this->app->getAppPath() . 'lang' . DIRECTORY_SEPARATOR . $langset . DIRECTORY_SEPARATOR . $path . '.php';
+        $langPath = $this->app->getAppPath() . 'lang' . DIRECTORY_SEPARATOR . $langset . DIRECTORY_SEPARATOR . $controller . '.php';
         if (is_file($langPath)) {
             $this->lang->load($langPath);
         }
